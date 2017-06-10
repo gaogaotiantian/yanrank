@@ -1,0 +1,243 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcss.com/vue/2.3.3/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/2.3.1/vuex.js"></script>
+  <script src='/lib/jquery.ui.widget.js' type='text/javascript'></script>
+  <script src='/lib/jquery.iframe-transport.js' type='text/javascript'></script>
+  <script src='/lib/jquery.fileupload.js' type='text/javascript'></script>
+  <script src='/lib/jquery.cloudinary.js' type='text/javascript'></script>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <nav class="navbar navbar-default" id="top_nav">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-collapse" v-if="category != ''">
+            {{category}}
+          </button>
+          <a class="navbar-brand" @click="ChangeContent('home')"href="#">颜rank</a>
+        </div> 
+        <div class="collapse navbar-collapse" id="header-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#" v-on:click="ChangeContent('upload')">上传图片</a></li>
+            <li><a href="#" v-on:click="ChangeContent('ranking')">排行榜</a></li>
+            <li><a href="#" v-on:click="ChangeContent('myProfile')">我的资料</a></li>
+          </ul>
+          <register inline-template>
+            <ul class="nav navbar-nav navbar-right">
+              <li v-if="isLogin">
+                <p class="navbar-text">Welcome! {{username}} <a href="#" @click="Logoff()">登出</a></p>
+              </li>
+              <li v-else>
+                <button class="btn btn-success navbar-btn" href="#signin" data-toggle="modal" data-target="#login_modal">注册 / 登录</button>
+              </li>
+            <ul>
+          </register>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div id="main_content">
+    <div class="row" v-if="currPage == 'home'">
+      home
+    </div>
+    <!-- The upload instance has to be there all the time for cloudinary to work -->
+    <div class="row" v-show="currPage == 'upload'">
+      <div class="col-md-8 col-md-offset-2">
+        <v-imageupload inline-template :url="uploadImageUrl" v-on:finish="uploadImageUrl = ''">
+          <div v-show="url != ''">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+                <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <img v-bind:src="url"></img>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h4>
+                  <span v-for="t in tags">
+                      <span class="label label-primary">{{t}}</span>
+                      <a><span class="glyphicon glyphicon-remove" @click=RemoveTag(t)></span></a>
+                      <span> </span>
+                  </span>
+                </h4>
+                <div class="ui-widget text-center">
+                  <input id="tags">
+                  <button class="btn btn-primary" type="button" @click="AddTag">增加Tag</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-danger" role="alert" v-if="err_msg != ''">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  {{err_msg}}
+                </div>
+                <button class="btn btn-success pull-right" @click="Finish">完成上传</button>
+              </div>
+            </div>
+          </div>
+        </v-imageupload>
+        <div v-show="uploadImageUrl == ''" class="input-group">
+          <div class="progress" style="margin-top:7;margin-bottom:0">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+              <span class="sr-only">0% Complete</span>
+            </div>
+          </div>
+          <span class="input-group-btn">
+            <label class="btn btn-default btn-file">
+              上传图片
+              <input name="file" type="file" 
+                class="cloudinary-fileupload" data-cloudinary-field="image_id" 
+                data-form-data="" style="display:none">
+              </input>
+            </label>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for register/login -->
+<div class="modal fade bs-modal-sm" id="login_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="bs-tabs">
+        <ul id="reg_tab" class="nav nav-tabs">
+          <li class="active"><a href="#signin" data-toggle="tab">登录</a></li>
+          <li><a href="#signup" data-toggle="tab">注册</a></li>
+        </ul>
+      </div>
+      <div class="modal-body">
+        <div class="tab-content">
+          <!-- login part -->
+          <div class="tab-pane fade active in" id="signin">
+            <form class="form-horizontal" @submit.prevent="Login">
+            <fieldset>
+
+              <div class="control-group">
+                <label class="control-label" for="login_username">用户名：</label>
+                <div class="controls">
+                  <input required="" id="login_username" type="text" class="form-control" v-model="login_username_val">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="login_password">密码：</label>
+                <div class="controls">
+                  <input required="" id="login_password" type="password" class="form-control" v-model="login_password_val">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" class="checkbox-inline" for="login_remember">
+                  <input type="checkbox" id="login_remember" type="password" v-model="login_remember_val">记住我   
+                </label>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="login_button"></label>
+                <div class="alert alert-danger" role="alert" v-if="err_login">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  {{err_login_msg}}
+                </div>
+                <div class="controls">
+                  <button id="login_button" class="btn btn-success" @click="Login()">登录</button>
+                </div>
+              </div>
+
+            </fieldset>
+            </form>
+          </div>
+          <!-- signup part -->
+          <div class="tab-pane fade" id="signup">
+            <form class="form-horizontal" @submit.prevent="Register">
+            <fieldset>
+
+              <div class="control-group">
+                <label class="control-label" for="signup_email">Email：</label>
+                <div class="alert alert-danger" role="alert" v-if="!email_valid">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  Enter a valid email address!
+                </div>
+                <div class="controls">
+                  <input required="" id="signup_email" type="text" class="form-control" v-model="signup_email_val" @blur="CheckEmailValid()">
+                </div>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label" for="signup_username">用户名：</label>
+                <div class="alert alert-danger" role="alert" v-if="!username_valid">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  {{signup_username_err_msg}}
+                </div>
+                <div class="controls">
+                  <input required="" id="signup_username" type="text" class="form-control" v-model="signup_username_val" @blur="CheckUsernameValid()">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="signup_password">密码：</label>
+                <div class="alert alert-danger" role="alert" v-if="!password_valid">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  密码至少要8位
+                </div>
+                <div class="controls">
+                  <input required="" id="signup_password" type="password" class="form-control" v-model="signup_password_val" @blur="CheckPasswordValid()">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="signup_password_again">再次输入密码：</label>
+                <div class="alert alert-danger" role="alert" v-if="!password_again_valid">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  两次密码输入需一致！
+                </div>
+                <div class="controls">
+                  <input required="" id="signup_password_again" type="password" class="form-control" v-model="signup_password_again_val" @blur="CheckPasswordAgainValid()">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="signup_button"></label>
+                <div class="alert alert-danger" role="alert" v-if="err_reg">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                  {{err_reg_msg}}
+                </div>
+                <div class="controls">
+                  <button id="login_button" class="btn btn-success">注册</button>
+                </div>
+              </div>
+
+            </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="./vueel.js"></script>
+</body>
+</html>
