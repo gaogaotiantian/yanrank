@@ -237,6 +237,9 @@ var v_main = new Vue( {
         score: 0,
         myImages: [],
         editurl: "", 
+        goodJudge: 0,
+        badJudge: 0,
+        totalJudge: 0,
     },
     computed: {
         currTag: function() {
@@ -247,6 +250,13 @@ var v_main = new Vue( {
         },
         username: function() {
             return store.state.username;
+        },
+        judgescore: function() {
+            if (this.goodJudge + this.badJudge == 0) {
+                return 0;
+            } else {
+                return (this.goodJudge*100 / (this.goodJudge + this.badJudge)).toFixed(2);
+            }
         },
     },
     methods: {
@@ -367,11 +377,14 @@ var v_main = new Vue( {
                     var judge = msg['judge'];
                     if (judge == 'correct') {
                         var res = $('<div/>').html(v.result).addClass('result-correct');
+                        v.goodJudge += msg['good_judge'];
                     } else if (judge == 'wrong') {
                         var res = $('<div/>').html(v.result).addClass('result-wrong');
+                        v.badJudge += msg['bad_judge'];
                     } else {
                         var res = $('<div/>').html(v.result).addClass('result-normal');
                     }
+                    v.totalJudge += 1;
                     $('#result_div').html(res);
                     if (v.image_cache.length >= 2) {
                         v.image_pair = [v.image_cache.pop(), v.image_cache.pop()];
