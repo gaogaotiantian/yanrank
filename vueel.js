@@ -312,7 +312,7 @@ var v_main = new Vue( {
                 data: JSON.stringify({
                     "gender": v.gender, 
                     "tag": v.currTag,
-                    "number": 10
+                    "number": 50
                 }),
                 success: function(msg) {
                     v.ranking = msg['ranking'];
