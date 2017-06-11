@@ -222,14 +222,17 @@
                 <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal">选择Tag</button>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-3" v-for="im in myImages" v-if="imgDisplay(im)">
+            <div class="row" v-for="imgArr in displayImgArr(4)">
+              <div class="col-md-3" v-for="im in imgArr">
                 <div class="thumbnail text-center">
                   <a v-bind:href="im.url" target="_blank"><img class="img-responsive img-rounded" v-bind:src="im.url"></img></a>
                   <br>
                   <span class="label label-primary" v-for="t in im.tags">{{t}}</span>
                   <br>
                   <p>Rank: {{im.rank}}</p>
+                  <div v-if="im.url == editurl">
+                  </div>
+                  <button class="btn btn-primary disabled" @click="EditImage(im.url)">编辑照片</button>
                   <button class="btn btn-danger" @click="DeleteImage(im.url)">删除照片</button>
                 </div>
               </div>

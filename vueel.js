@@ -236,6 +236,7 @@ var v_main = new Vue( {
         total_choice: 0,
         score: 0,
         myImages: [],
+        editurl: "", 
     },
     computed: {
         currTag: function() {
@@ -405,6 +406,26 @@ var v_main = new Vue( {
                     console.log(xhr);
                 }
             })
+        },
+        EditImage: function(url) {
+            this.editurl = url;
+        },
+        displayImgArr: function(len) {
+            var ret = [];
+            var r = [];
+            var idx = 0;
+            for (var i = 0; i < this.myImages.length; i++) {
+                if (this.imgDisplay(this.myImages[i])) {
+                    r.push(this.myImages[i]);
+                    idx += 1;
+                    if (idx == len) {
+                        ret.push(r);
+                        var r = [];
+                        idx = 0;
+                    }
+                }
+            }
+            return ret;
         },
         imgDisplay: function(im) {
             if (this.gender != '') {
