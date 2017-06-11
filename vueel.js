@@ -1,5 +1,5 @@
-//var server_url = "http://localhost:8000";
-var server_url = "https://yanrank.herokuapp.com";
+var server_url = "http://localhost:8000";
+//var server_url = "https://yanrank.herokuapp.com";
 $.cloudinary.config({ cloud_name: 'yanrank', api_key: '585812587869167'});
 const store = new Vuex.Store( {
     state : {
@@ -246,7 +246,7 @@ var v_main = new Vue( {
         },
         username: function() {
             return store.state.username;
-        }
+        },
     },
     methods: {
         UploadImage: function(url) {
@@ -405,6 +405,19 @@ var v_main = new Vue( {
                     console.log(xhr);
                 }
             })
+        },
+        imgDisplay: function(im) {
+            if (this.gender != '') {
+                if (im['gender'] != this.gender) {
+                    return false;
+                }
+            }
+            if (this.currTag != '') {
+                if (im['tags'].indexOf(this.currTag) == -1) {
+                    return false;
+                }
+            }
+            return true;
         }
     },
     mounted() {

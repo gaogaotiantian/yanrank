@@ -28,9 +28,6 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-collapse" v-if="category != ''">
-            {{category}}
-          </button>
           <a class="navbar-brand" @click="ChangeContent('home')"href="#">颜rank</a>
         </div> 
         <div class="collapse navbar-collapse" id="header-collapse">
@@ -218,7 +215,15 @@
           </div>
           <div class="col-md-9">
             <div class="row">
-              <div class="col-md-3" v-for="im in myImages">
+              <div class="col-md-12">
+                <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+                <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+                <button class="btn btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal">选择Tag</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3" v-for="im in myImages" v-if="imgDisplay(im)">
                 <div class="thumbnail text-center">
                   <a v-bind:href="im.url" target="_blank"><img class="img-responsive img-rounded" v-bind:src="im.url"></img></a>
                   <br>
