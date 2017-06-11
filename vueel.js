@@ -1,4 +1,5 @@
-var server_url = "http://localhost:8000";
+//var server_url = "http://localhost:8000";
+var server_url = "https://yanrank.herokuapp.com";
 $.cloudinary.config({ cloud_name: 'yanrank', api_key: '585812587869167'});
 const store = new Vuex.Store( {
     state : {
@@ -9,6 +10,8 @@ const store = new Vuex.Store( {
         level: 0,
         levelStat: [{'benefit': 0, 'post_gap': 0, 'post_limit': 0}, {'benefit': 1, 'post_gap': 24, 'post_limit': 3}, {'benefit': 2, 'post_gap': 6, 'post_limit': 5}, {'benefit': 3, 'post_gap': 3, 'post_limit': 8}, {'benefit': 4, 'post_gap': 1, 'post_limit': 12},{'benefit': 4, 'post_gap': 1, 'post_limit': 12}, {'benefit': 5, 'post_gap': 0.5, 'post_limit': 17}],
         loadedLocal: false,
+        availableTags: ['UCSB', '明星', '测试'],
+        currTag: "",
     },
     mutations: {
         SetLogin (state, data) {
@@ -30,6 +33,12 @@ const store = new Vuex.Store( {
         },
         SetLoadedLocal(state, data){
             state.loadedLocal = data;
+        },
+        SetAvailableTags(state, data) {
+            state.availableTags = data;
+        },
+        SetCurrTag(state, data) {
+            state.currTag = data;
         },
         ClearUser(state) {
             state.isLogin = false;
@@ -91,6 +100,11 @@ const store = new Vuex.Store( {
                     commit('ClearUser');
                 }
             })
+        },
+        GetAvailableTags({commit, state}) {
+            availableTags = ['UCSB', '明星', '测试']
+            commit('SetAvailableTags', availableTags);
+            $(".tags").autocomplete({source: availableTags});
         }
     }
 })
@@ -114,14 +128,18 @@ Vue.component('register', {
 });
 
 Vue.component('v-imageupload', {
-    props: ['url'],
+    props: ['urllist'],
     data: function() {
         return {
             tag: "",
             tags: [],
             err_msg: "",
             gender: "",
-            availableTags: [],
+        }
+    },
+    computed: {
+        availableTags: function() {
+            return store.state.availableTags;
         }
     },
     methods: {
@@ -129,10 +147,13 @@ Vue.component('v-imageupload', {
             this.gender = g;
         },
         AddTag: function() {
-            if (this.availableTags.indexOf($('#tags').val()) >= 0 && 
-                this.tags.indexOf($('#tags').val()) == -1) {
-                this.tag = $('#tags').val();
+            if (this.availableTags.indexOf($('#addTag').val()) >= 0 && 
+                this.tags.indexOf($('#addTag').val()) == -1) {
+                this.tag = $('#addTag').val();
                 this.tags.push(this.tag);
+            } else {
+                console.log("Wrong tag!");
+                console.log($('#addTag').val());
             }
         },
         RemoveTag: function(t) {
@@ -153,7 +174,7 @@ Vue.component('v-imageupload', {
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
                 data: JSON.stringify({
-                    "url": v.url, 
+                    "urlList": v.urllist, 
                     "owner": store.state.username, 
                     "gender": v.gender,
                     "tags": v.tags,
@@ -173,8 +194,7 @@ Vue.component('v-imageupload', {
         },
     },
     mounted() {
-        this.availableTags=['java', 'javascript', 'python'];
-        $("#tags").autocomplete({source: this.availableTags});
+        store.dispatch('GetAvailableTags');
     }
 });
 
@@ -187,7 +207,17 @@ var v_nav = new Vue ( {
         ChangeContent: function(c) {
             $('#header-collapse').collapse('hide');
             v_main.currPage = c;
-        }
+            if (c == "home") {
+                v_main.GetImages();
+            } else if (c == "ranking") {
+                v_main.GetRanking();
+            } else if (c == "upload") {
+                v_main.uploadImageUrlList = [];
+                v_main.success_msg = "";
+            } else if (c == "myProfile") {
+                v_main.GetUserInfo();
+            }
+        },
     },
 });
 var v_main = new Vue( {
@@ -195,14 +225,226 @@ var v_main = new Vue( {
     store,
     data: {
         currPage: "home",
-        uploadImageUrl: ""
+        uploadImageUrlList: [],
+        success_msg: "",
+        gender: "",
+        err_msg: "",
+        image_pair: ["", ""],
+        image_cache: [],
+        result: "",
+        ranking: [],
+        total_choice: 0,
+        score: 0,
+        myImages: [],
+    },
+    computed: {
+        currTag: function() {
+            return store.state.currTag;
+        },
+        isLogin: function() {
+            return store.state.isLogin;
+        },
+        username: function() {
+            return store.state.username;
+        }
     },
     methods: {
         UploadImage: function(url) {
-            this.uploadImageUrl = url;
+            this.uploadImageUrlList.push(url);
+        },
+        FinishUpload: function() {
+            this.uploadImageUrlList = [];
+            $('.progress-bar').css('width','0%');
+            this.success_msg = "上传成功";
+        },
+        ChooseGender: function(g) {
+            this.gender = g;
+            if (this.currPage == 'home') {
+                this.GetImages();
+            } else if (this.currPage == 'ranking') {
+                this.GetRanking();
+            }
+        },
+        ClearTag: function() {
+            store.commit('SetCurrTag', '');
+            if (this.currPage == 'home') {
+                this.GetImages();
+            } else if (this.currPage == 'ranking') {
+                this.GetRanking();
+            }
+        },
+        GetImages: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/getimages",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "gender": v.gender, 
+                    "tag": v.currTag,
+                    "number": 10
+                }),
+                success: function(msg) {
+                    v.image_cache = msg['images'];
+                    if (v.image_cache.length == 0) {
+                        v.image_pair = ["", ""]
+                    } else {
+                        v.image_pair = [v.image_cache.pop(), v.image_cache.pop()];
+                    }
+                    v.err_msg = "";
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.image_pair = ["", ""]
+                    v.image_cache = [];
+                }
+            })
+        },
+        GetRanking: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/getranking",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "gender": v.gender, 
+                    "tag": v.currTag,
+                    "number": 10
+                }),
+                success: function(msg) {
+                    v.ranking = msg['ranking'];
+                    v.err_msg = "";
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.ranking = [];
+                }
+            })
+        
+        },
+        GetUserInfo: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/userinfo",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "username": store.state.username, 
+                    "token": store.state.token,
+                }),
+                success: function(msg) {
+                    console.log(msg);
+                    v.total_choice = msg['total'];
+                    v.score = msg['point'];
+                    v.myImages = msg['images'];
+                    v.err_msg = "";
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.ranking = [];
+                }
+            })
+            
+        },
+        ChooseImage: function(win, lose) {
+            var v = this;
+            $.ajax({
+                url: server_url+"/pickimage",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "user": store.state.username,
+                    "win": win,
+                    "lose": lose
+                }),
+                success: function(msg) {
+                    v.result = msg['msg'];
+                    var judge = msg['judge'];
+                    if (judge == 'correct') {
+                        var res = $('<div/>').html(v.result).addClass('result-correct');
+                    } else if (judge == 'wrong') {
+                        var res = $('<div/>').html(v.result).addClass('result-wrong');
+                    } else {
+                        var res = $('<div/>').html(v.result).addClass('result-normal');
+                    }
+                    $('#result_div').html(res);
+                    if (v.image_cache.length >= 2) {
+                        v.image_pair = [v.image_cache.pop(), v.image_cache.pop()];
+                    } else {
+                        v.GetImages();
+                    }
+                    v.err_msg = "";
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.image_cache = [];
+                }
+            })
+            
+        },
+        DeleteImage: function(url) {
+            var v = this;
+            $.ajax({
+                url: server_url+"/deleteimage",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "username": store.state.username,
+                    "token": store.state.token,
+                    "url": url
+                }),
+                success: function(msg) {
+                    v.GetUserInfo();
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            })
         }
     },
+    mounted() {
+        store.dispatch('GetAvailableTags');
+        this.GetImages();
+    }
 })
+var v_choose_tag = new Vue( {
+    el: '#choose_tag_modal',
+    data: {
+        search: ""
+    },
+    computed: {
+        tags: function() {
+            if (this.search == "") {
+                return store.state.availableTags;
+            } else {
+                var ts = [];
+                var s = this.search.toLowerCase()
+                for (var i = 0; i < store.state.availableTags.length; i++) {
+                    if (store.state.availableTags[i].toLowerCase().indexOf(s) != -1) {
+                        ts.push(store.state.availableTags[i]);
+                    }
+                }
+                return ts;
+            }
+        }
+    },
+    methods: {
+        Click: function(tag) {
+            store.commit("SetCurrTag", tag);
+            if (v_main.currPage == 'home') {
+                v_main.GetImages();
+            } else if (v_main.currPage == 'ranking') {
+                v_main.GetRanking();
+            }
+        } 
+    }
+});
+
 var v_login = new Vue( {
     el: '#login_modal',
     data: {

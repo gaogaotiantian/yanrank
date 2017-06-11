@@ -1,0 +1,99 @@
+.result-correct
+{
+    animation: result-animation-correct 2s forwards linear;
+    -webkit-animation: result-animation-correct 2s forwards linear;
+}
+
+.result-wrong
+{
+    animation: result-animation-wrong 2s forwards linear;
+    -webkit-animation: result-animation-wrong 2s forwards linear;
+}
+
+.result-normal
+{
+    animation: result-animation-normal 2s forwards linear;
+    -webkit-animation: result-animation-normal 2s forwards linear;
+}
+@keyframes result-animation-correct
+{
+    0%  {font-size: 40px; color:green; opacity:1}
+    20%  {font-size: 40px; color:green; opacity:1}
+    100% {color:green; display:none; opacity:0}
+}
+
+@-webkit-keyframes result-animation-correct
+{
+    0%  {font-size: 40px; color:green; opacity:1}
+    20%  {font-size: 40px; color:green; opacity:1}
+    100% {color:green; display:none; opacity:0}
+}
+
+@keyframes result-animation-wrong
+{
+    0%  {font-size: 40px;color:red; opacity:1}
+    20%  {font-size: 40px;color:red; opacity:1}
+    100% {color:red; display:none; opacity:0}
+}
+
+@-webkit-keyframes result-animation-wrong
+{
+    0%  {font-size: 40px;color:red; opacity:1}
+    20%  {font-size: 40px;color:red; opacity:1}
+    100% {color:red; display:none; opacity:0}
+}
+@keyframes result-animation-normal
+{
+    0%  {font-size: 40px;opacity:1}
+    20%  {font-size: 40px;opacity:1}
+    100% {display:none; opacity:0}
+}
+
+@-webkit-keyframes result-animation-normal
+{
+    0%  {font-size: 40px;opacity:1}
+    20%  {font-size: 40px;opacity:1}
+    100% {display:none; opacity:0}
+}
+@media (max-width: 480px) {
+    @keyframes result-animation-correct
+    {
+        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; color:green; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; color:green; display:none; opacity:0}
+    }
+    
+    @-webkit-keyframes result-animation-correct
+    {
+        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; color:green; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; color:green; display:none; opacity:0}
+    }
+    
+    @keyframes result-animation-wrong
+    {
+        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; color:red; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; color:red; display:none; opacity:0}
+    }
+    
+    @-webkit-keyframes result-animation-wrong
+    {
+        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; color:red; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; color:red; display:none; opacity:0}
+    }
+    @keyframes result-animation-normal
+    {
+        0%  {transform: scale(1); font-size: 20px; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; display:none; opacity:0}
+    }
+    
+    @-webkit-keyframes result-animation-normal
+    {
+        0%  {transform: scale(1); font-size: 20px; opacity:1}
+        20%  {transform: scale(1); font-size: 20px; opacity:1}
+        100% {transform: scale(0.25); font-size: 20px; display:none; opacity:0}
+    }
+}
