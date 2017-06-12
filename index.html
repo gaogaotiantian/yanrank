@@ -225,6 +225,12 @@
                 <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
                 <button class="btn btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
                 <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal">选择Tag</button>
+                <div class="pull-right">
+                  排序
+                  <div class="btn-group btn-group-xs" role="group">
+                    <button class="btn btn-default" @click="SortMyImage('rank')">rank</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" v-for="imgArr in displayImgArr(4)">

@@ -240,6 +240,7 @@ var v_main = new Vue( {
         goodJudge: 0,
         badJudge: 0,
         totalJudge: 0,
+        currSortKey: "",
     },
     computed: {
         currTag: function() {
@@ -423,6 +424,14 @@ var v_main = new Vue( {
         EditImage: function(url) {
             this.editurl = url;
         },
+        SortMyImage: function(key) {
+            if (key == this.currSortKey) {
+                this.myImages.reverse();
+            } else {
+                this.myImages.sort(function(a,b){return b[key] - a[key]});
+            }
+            this.currSortKey = key;
+        },
         displayImgArr: function(len) {
             var ret = [];
             var r = [];
@@ -437,6 +446,9 @@ var v_main = new Vue( {
                         idx = 0;
                     }
                 }
+            }
+            if (r.length != 0) {
+                ret.push(r);
             }
             return ret;
         },
