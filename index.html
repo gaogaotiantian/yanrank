@@ -81,7 +81,7 @@
             <h4>请选择你更喜欢的那个～</h4>
           </div>
         </div>
-        <div class="row no-gutter">
+        <div class="row no-gutter" v-if="image_pair[0] != '' && image_pair[1] != ''">
           <div class="col-md-6 col-xs-6">
             <div class="thumbnail text-center">
               <a href="#"><img v-bind:src="image_pair[0]" @click="ChooseImage(image_pair[0], image_pair[1])"></img></a>
