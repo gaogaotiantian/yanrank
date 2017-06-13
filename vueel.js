@@ -1,5 +1,5 @@
-//var server_url = "http://localhost:8000";
-var server_url = "https://yanrank.herokuapp.com";
+var server_url = "http://localhost:8000";
+//var server_url = "https://yanrank.herokuapp.com";
 $.cloudinary.config({ cloud_name: 'yanrank', api_key: '585812587869167'});
 const store = new Vuex.Store( {
     state : {
@@ -287,6 +287,8 @@ var v_main = new Vue( {
         total_choice: 0,
         score: 0,
         myImages: [],
+        myTags: [],
+        newTagName: "",
         editurl: "", 
         editGender: "",
         editTags: [],
@@ -294,7 +296,7 @@ var v_main = new Vue( {
         badJudge: 0,
         totalJudge: 0,
         currSortKey: "",
-        checkedUrls: []
+        checkedUrls: [],
     },
     computed: {
         currTag: function() {
@@ -420,12 +422,58 @@ var v_main = new Vue( {
                     v.score = msg['point'];
                     v.myImages = msg['images'];
                     v.err_msg = "";
+                    v.myTags = msg['tags'];
                 },
                 error: function(xhr) {
                     v.err_msg = JSON.parse(xhr['responseText'])["msg"];
                     v.ranking = [];
                 }
             })
+            
+        },
+        CreateTag: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/createtag",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "username": store.state.username, 
+                    "token": store.state.token,
+                    "name": v.newTagName,
+                }),
+                success: function(msg) {
+                    v.GetUserInfo();
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                }
+            })
+            
+        },
+        DeleteTag: function(tag) {
+            var v = this;
+            var callback = function() {
+                $.ajax({
+                    url: server_url+"/deletetag",
+                    method: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "username": store.state.username, 
+                        "token": store.state.token,
+                        "key": tag.key,
+                    }),
+                    success: function(msg) {
+                        v.GetUserInfo();
+                    },
+                    error: function(xhr) {
+                        v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    }
+                })
+            }
+            v_confirm_action.SetAction(callback, {}, "btn-danger", "确定要删除《"+tag.name+"》么？所有在此Private Tag下的图片都将失去这个Tag！");
             
         },
         ChooseImage: function(win, lose) {
@@ -579,6 +627,9 @@ var v_choose_tag = new Vue( {
     data: {
         search: "",
         target: "",
+        privateTag: "",
+        tagValid: false,
+        privateTagConfirm: ""
     },
     computed: {
         tags: function() {
@@ -614,7 +665,26 @@ var v_choose_tag = new Vue( {
             } else {
                 console.log(store.state.tagCallBack);
             }
-        } 
+        },
+        CheckPrivateTag: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/checktag",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "key":v.privateTag
+                }),
+                success: function(msg) {
+                    v.privateTagConfirm = v.privateTag;
+                    v.tagValid = true;
+                },
+                error: function(xhr) {
+                    v.tagValid = false;
+                }
+            })
+        }
     }
 });
 

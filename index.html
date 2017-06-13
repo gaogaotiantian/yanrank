@@ -162,7 +162,7 @@
           </div>
         </v-imageupload>
         <div v-show="uploadImageUrlList.length == 0" class="alert alert-info" role="alert">
-          你可以最多一次上传20张图片，并且不超过20M，但是必须是同一个性别，并且你只能为这些图片选择同样的Tag<br>
+          你可以最多一次上传多张图片，但是必须是同一个性别，并且你只能为这些图片选择同样的Tag<br>
           上传图片时请注意，图片要包含一个人，并且可以清晰地看清正脸。<br>
           请不要上传暴力、色情、血腥、政治或任何违反相关法律法规的的图片<br>
           上传的图片带来的任何法律后果，由上传者负责。
@@ -216,13 +216,41 @@
       <div class="col-md-12">
         <div class="row" v-if="isLogin">
           <div class="col-md-3">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                {{username}}
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    {{username}}
+                  </div>
+                  <div class="panel-body">
+                    <p>评价次数：{{total_choice}}</p>
+                    <p>审美能力：{{score.toFixed(2)}}</p>
+                  </div>
+                </div>
               </div>
-              <div class="panel-body">
-                <p>评价次数：{{total_choice}}</p>
-                <p>审美能力：{{score.toFixed(2)}}</p>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <span>我的Private Tags</span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Tag名称" v-model="newTagName"></input>
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" @click="CreateTag">新建</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <p><strong>名称</strong>: Key</p>
+                    </div>
+                    <div v-for="t in myTags">
+                      <p><strong>{{t.name}}</strong>: {{t.key}}<a href="#" @click="DeleteTag(t)"><span class="glyphicon glyphicon-remove pull-right text-danger"></span></a></p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -252,7 +280,7 @@
                   <a v-bind:href="im.url" target="_blank"><img class="img-responsive img-rounded" v-bind:src="im.url"></img></a>
                   <br>
                   <div v-if="im.url != editurl">
-                    <span class="label label-primary" v-for="t in im.tags">{{t}}</span>
+                    <span class="label label-primary" v-for="t in im.tags" style="margin:2px">{{t}}</span>
                   </div>
                   <div v-else>
                     <span v-for="t in editTags">
@@ -329,6 +357,20 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="输入Private Tag" v-model="privateTag">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default" @click="CheckPrivateTag">确认</button>
+                  
+              </div>
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary" @click="Click(privateTagConfirm)" data-dismiss="modal" v-if="tagValid">{{privateTagConfirm}}</button>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
             <input type="text" class="form-control" placeholder="Search for..." v-model="search">
           </div>
         </div>
@@ -336,8 +378,7 @@
         <div class="row">
           <div class="col-md-12">
             <span v-for="tag in tags">
-              <button type="button" class="btn btn-primary" @click="Click(tag)" data-dismiss="modal">{{tag}}</button>
-              <span> </span>
+              <button type="button" class="btn btn-primary" @click="Click(tag)" data-dismiss="modal" style="margin:2px">{{tag}}</button>
             </span>
           </div>
         </div>
