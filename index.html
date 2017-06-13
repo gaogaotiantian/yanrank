@@ -61,15 +61,15 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
-            <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
-            <button class="btn btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
-            <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('home')">选择Tag</button>
+            <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+            <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+            <button class="btn btn-sm btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
+            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('home')">选择Tag</button>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-            <h3>请选择你更喜欢的那个～</h3>
+            <h4>请选择你更喜欢的那个～</h4>
           </div>
         </div>
         <div class="row no-gutter">
@@ -96,7 +96,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-            您这次进行了{{totalJudge}}次评价，您的审美评分为{{judgescore}}分。
+            您这次进行了{{totalJudge}}次评价，审美评分为{{judgescore}}分。
           </div>
         </div>
         <div class="row">
@@ -112,8 +112,8 @@
           <div v-show="urllist.length != 0">
             <div class="row">
               <div class="col-md-12 text-center">
-                <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
-                <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+                <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+                <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
               </div>
             </div>
             <div class="row">
@@ -195,12 +195,13 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
-            <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
-            <button class="btn btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
-            <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('ranking')">选择Tag</button>
+            <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+            <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+            <button class="btn btn-sm btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
+            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('ranking')">选择Tag</button>
           </div>
         </div>
+        <br>
         <div class="row">
           <div class="col-md-3" v-for="url in ranking">
             <div class="panel panel-default">
@@ -260,10 +261,10 @@
           <div class="col-md-9">
             <div class="row">
               <div class="col-md-12">
-                <button class="btn" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
-                <button class="btn" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
-                <button class="btn btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
-                <button class="btn btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('myProfile')">选择Tag</button>
+                <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'm'}" @click="ChooseGender('m')">男</button>
+                <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
+                <button class="btn btn-sm btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
+                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('myProfile')">选择Tag</button>
                 <div class="pull-right">
                   排序
                   <div class="btn-group btn-group-xs" role="group">
