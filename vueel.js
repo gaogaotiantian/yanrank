@@ -462,7 +462,6 @@ var v_main = new Vue( {
                     "token": store.state.token,
                 }),
                 success: function(msg) {
-                    console.log(msg);
                     v.total_choice = msg['total'];
                     v.score = msg['point'];
                     v.myImages = msg['images'];
@@ -856,7 +855,6 @@ UpdateFileUpload = function() {
         contentType: 'application/json;charset=UTF-8',
         data: JSON.stringify(data),
         success: function(msg) {
-            console.log(msg);
             data["signature"] = msg["signature"];
             $(".cloudinary-fileupload").attr("data-form-data", JSON.stringify(data))
             $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload({

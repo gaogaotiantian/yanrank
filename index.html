@@ -3,12 +3,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="author" content="Tian Gao">
+  <meta property="og:title" content="颜Rank">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="yanrank.com">
+  <meta property="og:image" content="http://www.yanrank.com/favicon.png">
+  <meta property="og:description" content="想测试一下自己的审美？或是挑战一下自己的美？来颜Rank吧！">
+  <meta property="og:url" content="http://www.yanrank.com">
+  <meta name="description" content="在颜Rank，你可以自由地评判别人的长相，也可以上传自己和朋友的照片了解自己颜值的高低。这是一个有关美和审美的网站。">
+
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <script src="https://cdn.bootcss.com/vue/2.3.3/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.3.3/vue.min.js"></script>
   <script src="https://cdn.bootcss.com/vuex/2.3.1/vuex.js"></script>
   <script src='./lib/jquery.ui.widget.js' type='text/javascript'></script>
   <script src='./lib/load-image.all.min.js' type='text/javascript'></script>
@@ -383,8 +392,14 @@
                 </div>
                 <div class="radio">
                   <label>
+                    <input type="radio" value="标错" v-model="type">
+                    图片性别错误，或并不属于标签所标类别
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
                     <input type="radio" value="隐私" v-model="type">
-                    图片是我本人，我认为侵犯了我的隐私权
+                    图片是我本人，我不想让我的照片出现在这个网站上
                   </label>
                 </div>
                 <div class="radio">
