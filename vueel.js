@@ -365,6 +365,9 @@ var v_main = new Vue( {
         Report: function(imageUrl) {
             store.commit('SetReportImageUrl', imageUrl);
         },
+        ChangeContent: function(c) {
+            v_nav.ChangeContent(c);
+        },
         UploadImage: function(url, delete_token) {
             this.uploadImageUrlList.push(url);
             this.$refs.imageupload.delete_tokens.push(delete_token);

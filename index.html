@@ -75,6 +75,7 @@
             <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
             <button class="btn btn-sm btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
             <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('home')">选择Tag</button>
+            <button class="btn btn-sm btn-primary visible-xs-inline pull-right" @click="ChangeContent('upload')">上传图片</button>
           </div>
         </div>
         <div class="row">
@@ -179,6 +180,9 @@
           上传图片时请注意，图片要包含一个人，并且可以清晰地看清正脸。<br>
           请不要上传暴力、色情、血腥、政治或任何违反相关法律法规的的图片<br>
           上传的图片带来的任何法律后果，由上传者负责。
+        </div>
+        <div v-show="uploadImageUrlList.length == 0 && !isLogin" class="alert alert-info" role="alert">
+          登录后上传图片，可以在以后修改Tag、删除图片以及跟踪图片的Ranking哦！
         </div>
         <div v-show="uploadImageUrlList.length == 0" class="alert alert-success" role="alert" v-if="success_msg != ''">
           {{success_msg}}
