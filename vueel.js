@@ -868,8 +868,6 @@ UpdateFileUpload = function() {
                 $('.progress-bar').css('width', Math.round((data.loaded * 100.0)/data.total) + '%');
             });
             $('.cloudinary-fileupload').bind('fileuploaddone', function(e, data) {
-                console.log(e);
-                console.log(data);
                 var path = data['result']['secure_url'];
                 var delete_token = data['result']['delete_token']
                 v_main.UploadImage(path, delete_token);
