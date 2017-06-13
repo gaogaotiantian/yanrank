@@ -71,15 +71,17 @@
             <h3>请选择你更喜欢的那个～</h3>
           </div>
         </div>
-        <div class="row">
+        <div class="row no-gutter">
           <div class="col-md-6 col-xs-6">
-            <div class="thumbnail">
+            <div class="thumbnail text-center">
               <a href="#"><img v-bind:src="image_pair[0]" @click="ChooseImage(image_pair[0], image_pair[1])"></img></a>
+              <a href="#" data-toggle="modal" data-target="#report_image_modal" @click=Report(image_pair[0])><small>我要举报</small></a>
             </div>
           </div>
           <div class="col-md-6 col-xs-6">
-            <div class="thumbnail">
+            <div class="thumbnail text-center">
               <a href="#"><img v-bind:src="image_pair[1]" @click="ChooseImage(image_pair[1], image_pair[0])"></img></a>
+              <a href="#" data-toggle="modal" data-target="#report_image_modal" @click="Report(image_pair[1])"><small>我要举报</small></a>
             </div>
           </div>
         </div>
@@ -350,6 +352,75 @@
   </div>
 </div>
 
+<!-- Modal for report images -->
+<div class="modal bs-modal-md fade" id="report_image_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-head text-center">
+      </div>
+      <div class="modal-body">
+        <div class="thumbnail">
+          <img v-bind:src="imageUrl"></img>  
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <form>
+              <div class="form-group">
+                <label>举报原因</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="违法" v-model="type">
+                    图片包含色情、暴力、血腥、政治等非法因素
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="没人" v-model="type">
+                    图片中没有人，或有超过一个人，或看不清正脸
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="隐私" v-model="type">
+                    图片是我本人，我认为侵犯了我的隐私权
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="失效" v-model="type">
+                    图片已经失效，无法加载
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="其他" v-model="type">
+                    其他
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>补充说明：</label>
+                <input type="text" class="form-control" v-model="note">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row pull-right">
+              <div class="col-md-12">
+                <button class="btn btn-default" data-dismiss="modal">取消举报</button>
+                <button class="btn btn-danger" @click="Report()">确认举报</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal for Choose Tag -->
 <div class="modal fade bs-modal-md" id="choose_tag_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-md">

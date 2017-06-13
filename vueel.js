@@ -13,6 +13,7 @@ const store = new Vuex.Store( {
         availableTags: ['UCSB', '明星', '测试'],
         currTag: "",
         tagCallBack: "",
+        reportImageUrl: "",
     },
     mutations: {
         SetLogin (state, data) {
@@ -43,6 +44,9 @@ const store = new Vuex.Store( {
         },
         SetTagCallBack(state, data) {
             state.tagCallBack = data;
+        },
+        SetReportImageUrl(state, data) {
+            state.reportImageUrl = data;
         },
         ClearUser(state) {
             state.isLogin = false;
@@ -248,6 +252,44 @@ var v_confirm_action = new Vue( {
     }
 });
 
+var v_report_image = new Vue( {
+    el: '#report_image_modal',
+    data: {
+        type: "",
+        note: "",
+        err_msg: "",
+    },
+    computed: {
+        imageUrl: function() {
+            return store.state.reportImageUrl;
+        }
+    },
+    methods: {
+        Report: function() {
+            var v = this;
+            $.ajax({
+                url: server_url+"/report",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "url": v.imageUrl, 
+                    "type": v.type,
+                    "note": v.note
+                }),
+                success: function(msg) {
+                    $('#report_image_modal').modal('hide');
+                    alert("举报成功!");
+                },
+                error: function(xhr) {
+                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                }
+            })
+            
+        }
+    }
+})
+
 var v_nav = new Vue ( {
     el: '#top_nav',
     data: {
@@ -319,6 +361,9 @@ var v_main = new Vue( {
     methods: {
         SetTagCallBack: function(val) {
             store.commit('SetTagCallBack', val);
+        },
+        Report: function(imageUrl) {
+            store.commit('SetReportImageUrl', imageUrl);
         },
         UploadImage: function(url, delete_token) {
             this.uploadImageUrlList.push(url);
