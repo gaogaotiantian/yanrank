@@ -12,6 +12,7 @@ const store = new Vuex.Store( {
         loadedLocal: false,
         availableTags: ['UCSB', '明星', '测试'],
         currTag: "",
+        tagCallBack: "",
     },
     mutations: {
         SetLogin (state, data) {
@@ -39,6 +40,9 @@ const store = new Vuex.Store( {
         },
         SetCurrTag(state, data) {
             state.currTag = data;
+        },
+        SetTagCallBack(state, data) {
+            state.tagCallBack = data;
         },
         ClearUser(state) {
             state.isLogin = false;
@@ -102,9 +106,19 @@ const store = new Vuex.Store( {
             })
         },
         GetAvailableTags({commit, state}) {
-            availableTags = ['UCSB', '明星', '测试']
-            commit('SetAvailableTags', availableTags);
-            $(".tags").autocomplete({source: availableTags});
+            $.ajax( {
+                url: server_url+"/getavailabletags",
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({}),
+                success: function(msg) {
+                    commit('SetAvailableTags', msg);
+                },
+                error: function(msg) {
+                    console.log(msg)
+                }
+            })
         }
     }
 })
@@ -135,6 +149,7 @@ Vue.component('v-imageupload', {
             tags: [],
             err_msg: "",
             gender: "",
+            delete_tokens: [],
         }
     },
     computed: {
@@ -143,8 +158,15 @@ Vue.component('v-imageupload', {
         }
     },
     methods: {
+        SetTagCallBack: function(val) {
+            store.commit('SetTagCallBack', val);
+        },
         ChooseGender: function(g) {
-            this.gender = g;
+            if (this.gender == g) {
+                this.gender = '';
+            } else {
+                this.gender = g;
+            }
         },
         AddTag: function() {
             if (this.availableTags.indexOf($('#addTag').val()) >= 0 && 
@@ -190,11 +212,39 @@ Vue.component('v-imageupload', {
                     v.err_msg = JSON.parse(xhr['responseText'])["msg"];
                 }
             })
-
         },
+        Cancel: function() {
+            var v = this;
+            for (var i = 0; i < this.delete_tokens.length; i++) {
+                $.cloudinary.delete_by_token(this.delete_tokens[i]);
+            }
+            this.$emit("cancel");
+        }
     },
     mounted() {
         store.dispatch('GetAvailableTags');
+    }
+});
+
+var v_confirm_action = new Vue( {
+    el: '#action_confirm',
+    data: {
+        info: "",
+        callback: function(){},
+        callback_data: {},
+        button_type: "btn-default"
+    },
+    methods: {
+        SetAction: function(callback, callback_data, button_type, info) {
+            this.callback = callback;
+            this.callback_data = callback_data;
+            this.button_type = button_type;
+            this.info = info;
+            $('#action_confirm').modal('show');
+        },
+        Close: function() {
+            $('#action_confirm').modal('hide');
+        }
     }
 });
 
@@ -229,6 +279,7 @@ var v_main = new Vue( {
         success_msg: "",
         gender: "",
         err_msg: "",
+        edit_err_msg: "",
         image_pair: ["", ""],
         image_cache: [],
         result: "",
@@ -237,10 +288,13 @@ var v_main = new Vue( {
         score: 0,
         myImages: [],
         editurl: "", 
+        editGender: "",
+        editTags: [],
         goodJudge: 0,
         badJudge: 0,
         totalJudge: 0,
         currSortKey: "",
+        checkedUrls: []
     },
     computed: {
         currTag: function() {
@@ -261,16 +315,29 @@ var v_main = new Vue( {
         },
     },
     methods: {
-        UploadImage: function(url) {
+        SetTagCallBack: function(val) {
+            store.commit('SetTagCallBack', val);
+        },
+        UploadImage: function(url, delete_token) {
             this.uploadImageUrlList.push(url);
+            this.$refs.imageupload.delete_tokens.push(delete_token);
         },
         FinishUpload: function() {
             this.uploadImageUrlList = [];
             $('.progress-bar').css('width','0%');
             this.success_msg = "上传成功";
         },
+        CancelUpload: function() {
+            this.uploadImageUrlList = [];
+            $('.progress-bar').css('width','0%');
+            this.success_msg = "取消上传";
+        },
         ChooseGender: function(g) {
-            this.gender = g;
+            if (this.gender == g) {
+                this.gender = '';
+            } else {
+                this.gender = g;
+            }
             if (this.currPage == 'home') {
                 this.GetImages();
             } else if (this.currPage == 'ranking') {
@@ -401,28 +468,64 @@ var v_main = new Vue( {
             })
             
         },
-        DeleteImage: function(url) {
+        DeleteImage: function(urlList) {
+            var v = this;
+            var callback = function(data) {
+                $.ajax({
+                    url: server_url+"/deleteimage",
+                    method: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: data,
+                    success: function(msg) {
+                        v.GetUserInfo();
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    }
+                })
+            };
+            var callback_data = JSON.stringify({
+                "username": store.state.username,
+                "token": store.state.token,
+                "urlList": urlList
+            });
+            v_confirm_action.SetAction(callback, callback_data, "btn-danger", "确定要删除"+urlList.length+"张图片么？");
+        },
+        EditImage: function(im) {
+            this.editurl = im.url;
+            this.editGender = im.gender;
+            this.editTags = im.tags;
+        },
+        ConfirmEditImage: function(im) {
             var v = this;
             $.ajax({
-                url: server_url+"/deleteimage",
+                url: server_url+"/editimage",
                 method: "POST",
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
                 data: JSON.stringify({
                     "username": store.state.username,
                     "token": store.state.token,
-                    "url": url
+                    "url": v.editurl,
+                    "gender": v.editGender, 
+                    "tags": v.editTags,
                 }),
                 success: function(msg) {
+                    v.editurl = '';
                     v.GetUserInfo();
+                    v.edit_err_msg = '';
                 },
                 error: function(xhr) {
-                    console.log(xhr);
+                    v.edit_err_msg = JSON.parse(xhr['responseText'])["msg"];
                 }
             })
         },
-        EditImage: function(url) {
-            this.editurl = url;
+        RemoveEditTag: function(t) {
+            var idx = this.editTags.indexOf(t)
+            if (idx > -1) {
+                this.editTags.splice(idx, 1);
+            }
         },
         SortMyImage: function(key) {
             if (key == this.currSortKey) {
@@ -474,7 +577,8 @@ var v_main = new Vue( {
 var v_choose_tag = new Vue( {
     el: '#choose_tag_modal',
     data: {
-        search: ""
+        search: "",
+        target: "",
     },
     computed: {
         tags: function() {
@@ -494,11 +598,21 @@ var v_choose_tag = new Vue( {
     },
     methods: {
         Click: function(tag) {
-            store.commit("SetCurrTag", tag);
-            if (v_main.currPage == 'home') {
+            if (store.state.tagCallBack == 'home') {
+                store.commit("SetCurrTag", tag);
                 v_main.GetImages();
-            } else if (v_main.currPage == 'ranking') {
+            } else if (store.state.tagCallBack == 'ranking') {
+                store.commit("SetCurrTag", tag);
                 v_main.GetRanking();
+            } else if (store.state.tagCallBack == 'upload') {
+                v_main.$refs.imageupload.tags.push(tag);
+            } else if (store.state.tagCallBack == 'myProfile') {
+                store.commit("SetCurrTag", tag);
+                v_main.GetUserInfo();
+            } else if (store.state.tagCallBack == 'imageEdit') {
+                v_main.editTags.push(tag);
+            } else {
+                console.log(store.state.tagCallBack);
             }
         } 
     }
@@ -618,6 +732,7 @@ UpdateFileUpload = function() {
         "timestamp": t,
         "callback": "/cloudinary_cors.html",
         "api_key": "585812587869167",
+        "return_delete_token": true
     };
     $.ajax({
         url: server_url + '/signature',
@@ -629,7 +744,13 @@ UpdateFileUpload = function() {
             console.log(msg);
             data["signature"] = msg["signature"];
             $(".cloudinary-fileupload").attr("data-form-data", JSON.stringify(data))
-            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload({
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp|ico)$/i,
+                imageMaxWidth: 1080,
+                imageMaxHeight: 1080,
+                maxFileSize: 3000000,
+                disableImageResize: false,
+            });
             $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
                 $('.progress-bar').css('width', Math.round((data.loaded * 100.0)/data.total) + '%');
             });
@@ -637,8 +758,8 @@ UpdateFileUpload = function() {
                 console.log(e);
                 console.log(data);
                 var path = data['result']['secure_url'];
-                console.log(path)
-                v_main.UploadImage(path);
+                var delete_token = data['result']['delete_token']
+                v_main.UploadImage(path, delete_token);
             });
         },
         error: function(xhr) {
