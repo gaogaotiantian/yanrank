@@ -1,14 +1,3 @@
-.row.no-gutter {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.row.no-gutter [class*='col-'] {
-  padding-right: 0;
-  padding-left: 0;
-}
-
-
 .result-correct
 {
     animation: result-animation-correct 2s forwards linear;
@@ -67,6 +56,16 @@
     100% {display:none; opacity:0}
 }
 @media (max-width: 480px) {
+    .row.image_display_div {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    
+    .row.image_display_div [class*='col-'] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
     @keyframes result-animation-correct
     {
         0%  {transform: scale(1); font-size: 20px; color:green; opacity:1}
