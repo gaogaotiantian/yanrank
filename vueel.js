@@ -474,6 +474,11 @@ var v_main = new Vue( {
                 error: function(xhr) {
                     v.err_msg = JSON.parse(xhr['responseText'])["msg"];
                     v.ranking = [];
+                },
+                statusCode: {
+                    401: function() {
+                        store.commit('ClearUser');
+                    }
                 }
             })
             
