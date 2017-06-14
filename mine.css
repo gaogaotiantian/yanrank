@@ -1,3 +1,25 @@
+.progress {
+    position:relative;
+}
+.progress span {
+    position:absolute;
+    left:0;
+    width:100%;
+    text-align:center;
+    z-index:2;
+    color:white;
+}
+
+.stroke
+{
+    color: white;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
+}
+
 .result-correct
 {
     animation: result-animation-correct 2s forwards linear;
