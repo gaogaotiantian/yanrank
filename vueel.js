@@ -328,6 +328,7 @@ var v_main = new Vue( {
         edit_err_msg: "",
         image_pair: ["", ""],
         image_cache: [],
+        isChoosingImage: false,
         result: "",
         ranking: [],
         total_choice: 0,
@@ -534,43 +535,47 @@ var v_main = new Vue( {
         },
         ChooseImage: function(win, lose) {
             var v = this;
-            $.ajax({
-                url: server_url+"/pickimage",
-                method: "POST",
-                dataType: "json",
-                contentType: 'application/json;charset=UTF-8',
-                data: JSON.stringify({
-                    "user": store.state.username,
-                    "win": win,
-                    "lose": lose
-                }),
-                success: function(msg) {
-                    v.result = msg['msg'];
-                    var judge = msg['judge'];
-                    if (judge == 'correct') {
-                        var res = $('<div/>').html(v.result).addClass('result-correct');
-                        v.goodJudge += msg['good_judge'];
-                    } else if (judge == 'wrong') {
-                        var res = $('<div/>').html(v.result).addClass('result-wrong');
-                        v.badJudge += msg['bad_judge'];
-                    } else {
-                        var res = $('<div/>').html(v.result).addClass('result-normal');
+            if (!this.isChoosingImage) {
+                this.isChoosingImage = true;
+                $.ajax({
+                    url: server_url+"/pickimage",
+                    method: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "user": store.state.username,
+                        "win": win,
+                        "lose": lose
+                    }),
+                    success: function(msg) {
+                        v.result = msg['msg'];
+                        var judge = msg['judge'];
+                        if (judge == 'correct') {
+                            var res = $('<div/>').html(v.result).addClass('result-correct');
+                            v.goodJudge += msg['good_judge'];
+                        } else if (judge == 'wrong') {
+                            var res = $('<div/>').html(v.result).addClass('result-wrong');
+                            v.badJudge += msg['bad_judge'];
+                        } else {
+                            var res = $('<div/>').html(v.result).addClass('result-normal');
+                        }
+                        v.totalJudge += 1;
+                        $('#result_div').html(res);
+                        if (v.image_cache.length >= 2) {
+                            v.image_pair = [v.image_cache.pop(), v.image_cache.pop()];
+                        } else {
+                            v.GetImages();
+                        }
+                        v.err_msg = "";
+                        v.isChoosingImage = false;
+                    },
+                    error: function(xhr) {
+                        v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                        v.image_cache = [];
+                        v.isChoosingImage = false;
                     }
-                    v.totalJudge += 1;
-                    $('#result_div').html(res);
-                    if (v.image_cache.length >= 2) {
-                        v.image_pair = [v.image_cache.pop(), v.image_cache.pop()];
-                    } else {
-                        v.GetImages();
-                    }
-                    v.err_msg = "";
-                },
-                error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
-                    v.image_cache = [];
-                }
-            })
-            
+                })
+            }
         },
         DeleteImage: function(urlList) {
             var v = this;
