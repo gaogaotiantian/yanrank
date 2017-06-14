@@ -169,7 +169,7 @@
                   <span class="glyphicon glyphicon-exclamation-sign"></span>
                   {{err_msg}}
                 </div>
-                <button class="btn btn-success pull-right" @click="Finish">完成上传</button>
+                <button class="btn btn-success pull-right" v-bind:class="{diabled:isFinishing}" @click="Finish">完成上传</button>
                 <button class="btn btn-danger pull-right" @click="Cancel">取消上传</button>
               </div>
             </div>

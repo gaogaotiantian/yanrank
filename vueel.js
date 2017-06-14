@@ -154,6 +154,7 @@ Vue.component('v-imageupload', {
             err_msg: "",
             gender: "",
             delete_tokens: [],
+            isFinishing: false
         }
     },
     computed: {
@@ -194,6 +195,7 @@ Vue.component('v-imageupload', {
                 return;
             }
             var v = this;
+            this.isFinishing = true;
             $.ajax({
                 url: server_url+"/addimage",
                 method: "POST",
@@ -211,9 +213,11 @@ Vue.component('v-imageupload', {
                     v.gender = "";
                     v.tag = "";
                     v.$emit("finish");
+                    v.isFinishing = false;
                 },
                 error: function(xhr) {
                     v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.isFinishing = false;
                 }
             })
         },
@@ -889,6 +893,7 @@ UpdateFileUpload = function() {
                 var path = data['result']['secure_url'];
                 var delete_token = data['result']['delete_token']
                 v_main.UploadImage(path, delete_token);
+                v_main.$refs.imageupload.isFinishing = false;
             });
         },
         error: function(xhr) {
