@@ -631,7 +631,17 @@ var v_main = new Vue( {
             if (key == this.currSortKey) {
                 this.myImages.reverse();
             } else {
-                this.myImages.sort(function(a,b){return b[key] - a[key]});
+                this.myImages.sort(function(a,b){
+                    var aVal = -1;
+                    var bVal = -1;
+                    if (!isNaN(a[key])) {
+                        aVal = a[key];
+                    }
+                    if (!isNaN(b[key])) {
+                        bVal = b[key];
+                    }
+                    return bVal - aVal;
+                });
             }
             this.currSortKey = key;
         },
