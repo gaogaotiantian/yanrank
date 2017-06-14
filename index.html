@@ -224,8 +224,12 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">#{{4*(i-1)+j}}</h3>
                   </div>
-                  <div class="panel-body">
-                    <img class="img-responsive img-rounded" style="margin:0 auto;" v-bind:src="ranking[4*(i-1)+j-1]"></img>
+                  <div class="panel-body text-center">
+                    <img class="img-responsive img-rounded" style="margin:0 auto;" v-bind:src="ranking[4*(i-1)+j-1]['url']"></img>
+                    <div></div>
+                    <span class="label label-primary" v-for="t in ranking[4*(i-1)+j-1]['tags']" style="margin:2px">{{t}}</span>
+                    <br>
+                    <p>Rank: {{ranking[4*(i-1)+j-1]['rank']}}</p>
                   </div>
                 </div>
               </div>
