@@ -365,6 +365,9 @@ var v_main = new Vue( {
         Report: function(imageUrl) {
             store.commit('SetReportImageUrl', imageUrl);
         },
+        ChangeContent: function(c) {
+            v_nav.ChangeContent(c);
+        },
         UploadImage: function(url, delete_token) {
             this.uploadImageUrlList.push(url);
             this.$refs.imageupload.delete_tokens.push(delete_token);
@@ -471,6 +474,11 @@ var v_main = new Vue( {
                 error: function(xhr) {
                     v.err_msg = JSON.parse(xhr['responseText'])["msg"];
                     v.ranking = [];
+                },
+                statusCode: {
+                    401: function() {
+                        store.commit('ClearUser');
+                    }
                 }
             })
             
@@ -623,7 +631,17 @@ var v_main = new Vue( {
             if (key == this.currSortKey) {
                 this.myImages.reverse();
             } else {
-                this.myImages.sort(function(a,b){return b[key] - a[key]});
+                this.myImages.sort(function(a,b){
+                    var aVal = -1;
+                    var bVal = -1;
+                    if (!isNaN(a[key])) {
+                        aVal = a[key];
+                    }
+                    if (!isNaN(b[key])) {
+                        bVal = b[key];
+                    }
+                    return bVal - aVal;
+                });
             }
             this.currSortKey = key;
         },
@@ -868,8 +886,6 @@ UpdateFileUpload = function() {
                 $('.progress-bar').css('width', Math.round((data.loaded * 100.0)/data.total) + '%');
             });
             $('.cloudinary-fileupload').bind('fileuploaddone', function(e, data) {
-                console.log(e);
-                console.log(data);
                 var path = data['result']['secure_url'];
                 var delete_token = data['result']['delete_token']
                 v_main.UploadImage(path, delete_token);

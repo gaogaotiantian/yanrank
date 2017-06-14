@@ -2,6 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>颜Rank</title>
   <link rel="icon" type="image/png" href="/favicon.png">
   <meta name="author" content="Tian Gao">
   <meta property="og:title" content="颜Rank">
@@ -74,6 +75,7 @@
             <button class="btn btn-sm" v-bind:class="{'btn-primary':gender == 'f'}" @click="ChooseGender('f')">女</button>
             <button class="btn btn-sm btn-primary" v-if="currTag != ''" @click="ClearTag">{{currTag}}</button>
             <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#choose_tag_modal" @click="SetTagCallBack('home')">选择Tag</button>
+            <button class="btn btn-sm btn-primary visible-xs-inline pull-right" @click="ChangeContent('upload')">上传图片</button>
           </div>
         </div>
         <div class="row">
@@ -81,7 +83,7 @@
             <h4>请选择你更喜欢的那个～</h4>
           </div>
         </div>
-        <div class="row image_display_div">
+        <div class="row image_display_div" v-if="image_pair[0] != '' && image_pair[1] != ''">
           <div class="col-md-6 col-xs-6">
             <div class="thumbnail text-center">
               <a href="#"><img v-bind:src="image_pair[0]" @click="ChooseImage(image_pair[0], image_pair[1])"></img></a>
@@ -179,6 +181,9 @@
           请不要上传暴力、色情、血腥、政治或任何违反相关法律法规的的图片<br>
           上传的图片带来的任何法律后果，由上传者负责。
         </div>
+        <div v-show="uploadImageUrlList.length == 0 && !isLogin" class="alert alert-info" role="alert">
+          登录后上传图片，可以在以后修改Tag、删除图片以及跟踪图片的Ranking哦！
+        </div>
         <div v-show="uploadImageUrlList.length == 0" class="alert alert-success" role="alert" v-if="success_msg != ''">
           {{success_msg}}
         </div>
@@ -212,13 +217,17 @@
         </div>
         <br>
         <div class="row">
-          <div class="col-md-3" v-for="url in ranking">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">#{{ranking.indexOf(url)+1}}</h3>
-              </div>
-              <div class="panel-body">
-                <img class="img-responsive img-rounded" style="margin:0 auto;" v-bind:src="url"></img>
+          <div class="col-md-12">
+            <div class="row" v-for="i in Math.ceil(ranking.length/4)">
+              <div class="col-md-3" v-for="j in 4">
+                <div class="panel panel-default" v-if="(i-1)*4+j-1 < ranking.length">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">#{{4*(i-1)+j}}</h3>
+                  </div>
+                  <div class="panel-body">
+                    <img class="img-responsive img-rounded" style="margin:0 auto;" v-bind:src="ranking[4*(i-1)+j-1]"></img>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
