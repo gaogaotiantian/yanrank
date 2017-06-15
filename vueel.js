@@ -886,9 +886,9 @@ UpdateFileUpload = function() {
             $(".cloudinary-fileupload").attr("data-form-data", JSON.stringify(data))
             $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp|ico)$/i,
-                imageMaxWidth: 1080,
-                imageMaxHeight: 1080,
-                maxFileSize: 3000000,
+                imageMaxWidth: 720,
+                imageMaxHeight: 960,
+                maxFileSize:1000000,
                 disableImageResize: false,
             });
             $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
