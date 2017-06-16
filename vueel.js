@@ -702,7 +702,8 @@ var v_choose_tag = new Vue( {
         target: "",
         privateTag: "",
         tagValid: false,
-        privateTagConfirm: ""
+        privateTagConfirm: "",
+        err_msg: "",
     },
     computed: {
         tags: function() {
@@ -752,9 +753,11 @@ var v_choose_tag = new Vue( {
                 success: function(msg) {
                     v.privateTagConfirm = v.privateTag;
                     v.tagValid = true;
+                    v.err_msg = '';
                 },
                 error: function(xhr) {
                     v.tagValid = false;
+                    v.err_msg = '没有这个Private Tag，请登录后在《我的资料》页面新建Private Tag，然后使用系统生成的Key';
                 }
             })
         }

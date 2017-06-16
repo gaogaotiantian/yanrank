@@ -482,6 +482,9 @@
                   
               </div>
             </div>
+            <div class="alert alert-danger" role="alert" v-if="err_msg != ''">
+              {{err_msg}}
+            </div>
             <br>
             <button type="button" class="btn btn-primary" @click="Click(privateTagConfirm)" data-dismiss="modal" v-if="tagValid">{{privateTagConfirm}}</button>
           </div>
