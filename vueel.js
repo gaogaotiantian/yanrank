@@ -217,7 +217,7 @@ Vue.component('v-imageupload', {
                     v.isFinishing = false;
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.err_msg = xhr['responseJSON']["msg"];
                     v.isFinishing = false;
                 }
             })
@@ -288,7 +288,7 @@ var v_report_image = new Vue( {
                     alert("举报成功!");
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.err_msg = xhr['responseJSON']["msg"];
                 }
             })
             
@@ -431,7 +431,9 @@ var v_main = new Vue( {
                     v.err_msg = "";
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    console.log(xhr);
+                    v.err_msg = xhr['responseJSON']["msg"];
+                    console.log(xhr['responseJSON']);
                     v.image_pair = ["", ""]
                     v.image_cache = [];
                 }
@@ -454,7 +456,7 @@ var v_main = new Vue( {
                     v.err_msg = "";
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.err_msg = xhr['responseJSON']["msg"];
                     v.ranking = [];
                 }
             })
@@ -479,7 +481,7 @@ var v_main = new Vue( {
                     v.myTags = msg['tags'];
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.err_msg = xhr['responseJSON']["msg"];
                     v.ranking = [];
                 },
                 statusCode: {
@@ -506,7 +508,7 @@ var v_main = new Vue( {
                     v.GetUserInfo();
                 },
                 error: function(xhr) {
-                    v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.err_msg = xhr['responseJSON']["msg"];
                 }
             })
             
@@ -528,7 +530,7 @@ var v_main = new Vue( {
                         v.GetUserInfo();
                     },
                     error: function(xhr) {
-                        v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                        v.err_msg = xhr['responseJSON']["msg"];
                     }
                 })
             }
@@ -572,7 +574,7 @@ var v_main = new Vue( {
                         v.isChoosingImage = false;
                     },
                     error: function(xhr) {
-                        v.err_msg = JSON.parse(xhr['responseText'])["msg"];
+                        v.err_msg = xhr['responseJSON']["msg"];
                         v.image_cache = [];
                         v.isChoosingImage = false;
                     }
@@ -628,7 +630,7 @@ var v_main = new Vue( {
                     v.edit_err_msg = '';
                 },
                 error: function(xhr) {
-                    v.edit_err_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v.edit_err_msg = xhr['responseJSON']["msg"];
                 }
             })
         },
@@ -807,7 +809,7 @@ var v_login = new Vue( {
                 },
                 error: function(xhr) {
                     v_login.err_reg = true;
-                    v_login.err_reg_msg = JSON.parse(xhr['responseText'])["msg"];
+                    v_login.err_reg_msg = xhr['responseJSON']["msg"];
                 }
             })
         },
@@ -831,8 +833,10 @@ var v_login = new Vue( {
                     );
                 },
                 error: function(xhr) {
+                    console.log(xhr)
                     v_login.err_login = true;
-                    v_login.err_login_msg = JSON.parse(xhr['responseText'])["msg"]
+                    v_login.err_login_msg = xhr['responseJSON']["msg"];
+                    console.log(xhr['response'])
                 }
             })
         },

@@ -319,6 +319,13 @@
                 <div class="thumbnail text-center">
                   <a v-bind:href="im.url" target="_blank"><img class="img-responsive img-rounded" v-bind:src="im.url"></img></a>
                   <br>
+                  <div v-if="im.reports.length > 0">
+                    <div v-for="report in im.reports">
+                      <span class="label label-danger">{{report['type']}} </span>
+                      <span>{{report['note']}}</span>
+                    </div>
+                  </div>
+                  <br>
                   <div v-if="im.url != editurl">
                     <span class="label label-primary" v-for="t in im.tags" style="margin:2px">{{t}}</span>
                   </div>
