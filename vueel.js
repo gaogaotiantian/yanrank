@@ -196,6 +196,7 @@ Vue.component('v-imageupload', {
             }
             var v = this;
             this.isFinishing = true;
+            this.delete_tokens = [];
             $.ajax({
                 url: server_url+"/addimage",
                 method: "POST",
@@ -226,6 +227,7 @@ Vue.component('v-imageupload', {
             for (var i = 0; i < this.delete_tokens.length; i++) {
                 $.cloudinary.delete_by_token(this.delete_tokens[i]);
             }
+            this.delete_tokens = [];
             this.$emit("cancel");
         }
     },
