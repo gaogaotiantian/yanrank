@@ -730,7 +730,9 @@ var v_choose_tag = new Vue( {
                 store.commit("SetCurrTag", tag);
                 v_main.GetRanking();
             } else if (store.state.tagCallBack == 'upload') {
-                v_main.$refs.imageupload.tags.push(tag);
+                if (v_main.$refs.imageupload.tags.indexOf(tag) == -1) {
+                    v_main.$refs.imageupload.tags.push(tag);
+                }
             } else if (store.state.tagCallBack == 'myProfile') {
                 store.commit("SetCurrTag", tag);
                 v_main.GetUserInfo();
