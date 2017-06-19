@@ -1,5 +1,5 @@
-var server_url = "http://localhost:8000";
-//var server_url = "https://yanrank.herokuapp.com";
+//var server_url = "http://localhost:8000";
+var server_url = "https://yanrank.herokuapp.com";
 $.cloudinary.config({ cloud_name: 'yanrank', api_key: '585812587869167'});
 const store = new Vuex.Store( {
     state : {
