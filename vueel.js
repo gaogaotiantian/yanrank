@@ -1,5 +1,5 @@
-//var server_url = "http://localhost:8000";
-var server_url = "https://yanrank.herokuapp.com";
+var server_url = "http://localhost:8000";
+//var server_url = "https://yanrank.herokuapp.com";
 $.cloudinary.config({ cloud_name: 'yanrank', api_key: '585812587869167'});
 const store = new Vuex.Store( {
     state : {
@@ -10,7 +10,7 @@ const store = new Vuex.Store( {
         level: 0,
         levelStat: [{'benefit': 0, 'post_gap': 0, 'post_limit': 0}, {'benefit': 1, 'post_gap': 24, 'post_limit': 3}, {'benefit': 2, 'post_gap': 6, 'post_limit': 5}, {'benefit': 3, 'post_gap': 3, 'post_limit': 8}, {'benefit': 4, 'post_gap': 1, 'post_limit': 12},{'benefit': 4, 'post_gap': 1, 'post_limit': 12}, {'benefit': 5, 'post_gap': 0.5, 'post_limit': 17}],
         loadedLocal: false,
-        availableTags: ['UCSB', '明星', '测试'],
+        availableTags: [],
         currTag: "",
         tagCallBack: "",
         reportImageUrl: "",
@@ -171,16 +171,6 @@ Vue.component('v-imageupload', {
                 this.gender = '';
             } else {
                 this.gender = g;
-            }
-        },
-        AddTag: function() {
-            if (this.availableTags.indexOf($('#addTag').val()) >= 0 && 
-                this.tags.indexOf($('#addTag').val()) == -1) {
-                this.tag = $('#addTag').val();
-                this.tags.push(this.tag);
-            } else {
-                console.log("Wrong tag!");
-                console.log($('#addTag').val());
             }
         },
         RemoveTag: function(t) {
