@@ -39,43 +39,61 @@
 }
 @keyframes result-animation-correct
 {
-    0%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {color:green; display:none; opacity:0; position:fixed; top:50%;text-align:center; width:100%; left:0}
+    0%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+    20%  {font-size: 40px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+    100% {color:white; display:none; opacity:0; position:fixed; top:50%;text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
 }
 
 @-webkit-keyframes result-animation-correct
 {
-    0%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {color:green; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+    0%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+    20%  {font-size: 40px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+    100% {color:green; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
 }
 
 @keyframes result-animation-wrong
 {
-    0%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+    0%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+    20%  {font-size: 40px;color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+    100% {color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
 }
 
 @-webkit-keyframes result-animation-wrong
 {
-    0%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+    0%  {font-size: 40px;color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+    20%  {font-size: 40px;color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+    100% {color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
 }
 @keyframes result-animation-normal
 {
-    0%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+    0%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+    20%  {font-size: 40px;color:white;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+    100% {display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
 }
 
 @-webkit-keyframes result-animation-normal
 {
-    0%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    20%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-    100% {display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+    0%  {font-size: 40px;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+    20%  {font-size: 40px;color:white;opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+    100% {display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
 }
 @media (max-width: 480px) {
     .row.image_display_div {
@@ -90,42 +108,60 @@
 
     @keyframes result-animation-correct
     {
-        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; color:green; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+        20%  {transform: scale(1); font-size: 20px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+        100% {transform: scale(0.25); font-size: 20px; color:white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
     }
     
     @-webkit-keyframes result-animation-correct
     {
-        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; color:green; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; color:green; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+        20%  {transform: scale(1); font-size: 20px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
+        100% {transform: scale(0.25); font-size: 20px; color:white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 green, 1px -1px 0 green, -1px 1px 0 green, 1px 1px 0 green;}
     }
     
     @keyframes result-animation-wrong
     {
-        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+        20%  {transform: scale(1); font-size: 20px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+        100% {transform: scale(0.25); font-size: 20px; color:white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
     }
     
     @-webkit-keyframes result-animation-wrong
     {
-        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; color:red; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; color:red; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+        20%  {transform: scale(1); font-size: 20px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
+        100% {transform: scale(0.25); font-size: 20px; color:white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;}
     }
     @keyframes result-animation-normal
     {
-        0%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+        20%  {transform: scale(1); font-size: 20px; color: white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+        100% {transform: scale(0.25); font-size: 20px; color: white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
     }
     
     @-webkit-keyframes result-animation-normal
     {
-        0%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        20%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0}
-        100% {transform: scale(0.25); font-size: 20px; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0}
+        0%  {transform: scale(1); font-size: 20px; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+        20%  {transform: scale(1); font-size: 20px; color:white; opacity:1; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
+        100% {transform: scale(0.25); font-size: 20px; color:white; display:none; opacity:0; position:fixed; top:50%; text-align:center; width:100%; left:0;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
     }
 }
