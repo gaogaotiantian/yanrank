@@ -362,6 +362,7 @@ var v_main = new Vue( {
         goodJudge: 0,
         badJudge: 0,
         totalJudge: 0,
+        strike: 0,
         currSortKey: "",
         checkedUrls: [],
     },
@@ -573,9 +574,28 @@ var v_main = new Vue( {
                         v.result = msg['msg'];
                         var judge = msg['judge'];
                         if (judge == 'correct') {
-                            var res = $('<div/>').html(v.result).addClass('result-correct');
+                            v.strike += 1;
+                            var s = v.strike + "连斩！<br>";
+                            if (v.strike == 3) {
+                                s += "水平还可以嘛！<br>";
+                            } else if (v.strike == 5) {
+                                s += "连对五个？不要骄傲哦！后面会更难的！<br>";
+                            } else if (v.strike == 8) {
+                                s += "少年看你骨骼清奇，未来必成大气！<br>"
+                            } else if (v.strike == 10) {
+                                s += "太可怕了，你要不要考虑成为一个职业审美者？<br>"
+                            } else if (v.strike == 15) {
+                                s += "讲道理，你是不是作弊了？怎么可能连续对这么多？<br>"
+                            } else if (v.strike == 20) {
+                                s += "你已经被我记录在案！我要好好调查一下你怎么可能连着对20个的！<br>"
+                            } else if (v.strike == 30) {
+                                s += "好吧，我承认你是审美界第一大神，你爱怎么玩怎么玩吧。<br>"
+                            }
+                            s += v.result;
+                            var res = $('<div/>').html(s).addClass('result-correct');
                             v.goodJudge += msg['good_judge'];
                         } else if (judge == 'wrong') {
+                            v.strike = 0;
                             var res = $('<div/>').html(v.result).addClass('result-wrong');
                             v.badJudge += msg['bad_judge'];
                         } else {
