@@ -169,10 +169,24 @@
                   </span>
                 </h4>
                 <div class="text-center">
-                  <button class="btn btn-primary" type="button" data-target="#choose_tag_modal" data-toggle="modal" @click="SetTagCallBack('upload')">增加Tag</button>
+                  <div class="alert alert-danger" role="alert" v-if="new_tag_err_msg != ''">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    {{new_tag_err_msg}}
+                  </div>
+                  <div class="alert alert-success" role="alert" v-if="new_tag_success_msg != ''">
+                    {{new_tag_success_msg}}
+                  </div>
+                  <div class="input-group">
+                    <input class="form-control" placeholder="输入你想新建的Tag" v-model="new_tag"></input>
+                    <span class="input-group-btn">
+                      <button class="btn btn-success" type="button" @click="CreateTag">新建Tag</button>
+                      <button class="btn btn-primary" type="button" data-target="#choose_tag_modal" data-toggle="modal" @click="SetTagCallBack('upload')">添加Tag</button>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+            <br>
             <div class="row">
               <div class="col-md-12">
                 <div class="alert alert-danger" role="alert" v-if="err_msg != ''">

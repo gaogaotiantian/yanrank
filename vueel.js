@@ -152,8 +152,11 @@ Vue.component('v-imageupload', {
             tag: "",
             tags: [],
             err_msg: "",
+            new_tag_err_msg: "",
+            new_tag_success_msg: "",
             gender: "",
             delete_tokens: [],
+            new_tag: "",
             isFinishing: false
         }
     },
@@ -171,6 +174,31 @@ Vue.component('v-imageupload', {
                 this.gender = '';
             } else {
                 this.gender = g;
+            }
+        },
+        CreateTag: function() {
+            var v = this;
+            if (this.new_tag != '') {
+                $.ajax({
+                    url: server_url+"/createpublictag",
+                    method: "POST",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "name": v.new_tag,
+                    }),
+                    success: function(msg) {
+                        v.new_tag_success_msg = "新建Tag成功！";
+                        v.new_tag_err_msg = '';
+                        store.dispatch('GetAvailableTags');
+                        v.tags.push(v.new_tag);
+                        v.new_tag = '';
+                    },
+                    error: function(xhr) {
+                        v.new_tag_success_msg = "";
+                        v.new_tag_err_msg = xhr['responseJSON']['msg'];
+                    }
+                })
             }
         },
         RemoveTag: function(t) {
@@ -485,7 +513,7 @@ var v_main = new Vue( {
         CreateTag: function() {
             var v = this;
             $.ajax({
-                url: server_url+"/createtag",
+                url: server_url+"/createprivatetag",
                 method: "POST",
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
