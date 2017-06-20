@@ -575,7 +575,13 @@ var v_main = new Vue( {
                         var judge = msg['judge'];
                         if (judge == 'correct') {
                             v.strike += 1;
-                            var s = v.strike + "连斩！<br>";
+                            var s = v.result;
+                            s += '<br>'
+                            if (v.strike > 1) {
+                                s += v.strike + "连斩";
+                                s += "！".repeat(Math.ceil(v.strike/10));
+                                s += '<br>';
+                            }
                             if (v.strike == 3) {
                                 s += "水平还可以嘛！<br>";
                             } else if (v.strike == 5) {
@@ -591,7 +597,6 @@ var v_main = new Vue( {
                             } else if (v.strike == 30) {
                                 s += "好吧，我承认你是审美界第一大神，你爱怎么玩怎么玩吧。<br>"
                             }
-                            s += v.result;
                             var res = $('<div/>').html(s).addClass('result-correct');
                             v.goodJudge += msg['good_judge'];
                         } else if (judge == 'wrong') {
