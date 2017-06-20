@@ -322,6 +322,7 @@ var v_nav = new Vue ( {
     methods : {
         ChangeContent: function(c) {
             $('#header-collapse').collapse('hide');
+            $('#result_div').empty();
             v_main.currPage = c;
             if (c == "home") {
                 v_main.GetImages();
