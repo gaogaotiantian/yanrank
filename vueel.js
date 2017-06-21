@@ -429,6 +429,19 @@ var v_main = new Vue( {
                 this.GetRanking();
             }
         },
+        SmallSize: function(url) {
+            var lst = url.split('/');
+            lst.splice(-2,0,'w_360,h_480,c_limit');
+            return lst.join('/');
+        },
+        ToProperSize: function(url) {
+            if (window.innerWidth < 600) {
+                return this.SmallSize(url);
+            } else {
+                return url;
+            }
+                
+        },
         GetImages: function() {
             var v = this;
             $.ajax({

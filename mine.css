@@ -174,3 +174,39 @@
             text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;}
     }
 }
+
+.share_button
+{
+    background-image:url('http://v3.jiathis.com/code/images/jiathis_ico_24x24.png');
+    background-color: transparent;
+    width:24px;
+    height:24px;
+}
+.share_button_qq
+{
+    background-position:0px 24px;
+}
+.share_button_weixin
+{
+    background-position:0px 336px;
+}
+.share_button_fb
+{
+    background-position:0px 2016px;
+}
+.share_button_twitter
+{
+    background-position:0px 1992px;
+}
+.share_button_weibo
+{
+    background-position:0px 2904px;
+}
+.share_button_tieba
+{
+    background-position:0px 2928px;
+}
+.share_button_qzone
+{
+    background-position:0px 2952px;
+}
